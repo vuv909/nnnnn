@@ -1,0 +1,47 @@
+<div class="pl-3">
+    <h1 class="text-center mt-3 font-bold text-xl mb-5">
+      Các tài khoản đang bị block
+    </h1>
+    <nz-table [nzShowPagination]="false" #basicTable [nzData]="listAccounts">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Giới tính</th>
+          <th>Vai trò</th>
+          <th>Xác thực</th>
+          <th>Trạng thái</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of listAccounts; let i = index">
+          @if(data?.role !== "ADMIN"){
+          <td>{{ i + 1 }}</td>
+          <td>{{ data?.username }}</td>
+          <td>{{ data?.email }}</td>
+          <td>{{ data?.gender === true ? "Nam" : "Nữ" }}</td>
+          <td>{{ data?.role }}</td>
+          <td>{{ data?.verify === true ? "Đã xác thực" : "Chưa xác thực" }}</td>
+          <td>{{ "Block" }}</td>
+          <td>
+            <button
+              class="w-24 bg-blue-500 hover:bg-blue-300 text-white p-1 rounded-md mr-5"
+              (click)="unBlockAccount(data)"
+            >
+              Bỏ Chặn
+            </button>
+          </td>
+          }
+        </tr>
+      </tbody>
+    </nz-table>
+    <div class="flex justify-center" *ngIf="totalPage > 0">
+      <nz-pagination
+        [nzPageIndex]="page"
+        [nzTotal]="totalPage * 10"
+        (nzPageIndexChange)="pageActive($event)"
+      ></nz-pagination>
+    </div>
+  </div>
+  

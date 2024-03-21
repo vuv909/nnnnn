@@ -1,0 +1,98 @@
+<nav
+  class="flex items-center p-2 fixed top-0 z-50 h-20 bg-white shadow-xl"
+  [style.width]="'100%'"
+  style="transition: 0.5s ease-in-out"
+>
+  <div style="width: 100%">
+    <div class="flex items-center justify-between gap-2 ml-10 mr-5">
+      <div routerLink="/" class="cursor-pointer">
+        <img
+          src="assets/images/logo.png"
+          class="ml-28 w-10 h-10"
+          alt="loading..."
+        />
+      </div>
+      <div class="flex items-center justify-between gap-5">
+        <div class="cursor-pointer mr-5 hover:underline">
+          <p
+            class="font-bold text-black"
+            style="transition: 0.5s ease-in-out"
+            (click)="about()"
+          >
+            Giới thiệu
+          </p>
+        </div>
+        <div class="cursor-pointer mr-5 hover:underline">
+          <p
+            class="font-bold text-black"
+            style="transition: 0.5s ease-in-out"
+            (click)="contact()"
+          >
+            Liên hệ
+          </p>
+        </div>
+        @if (isLogin === false){
+        <div class="flex gap-2">
+          <div
+            class="box-border bg-red-500 p-2 hover:bg-red-400 rounded-sm w-28 text-center"
+          >
+            <button class="font-semibold text-white" routerLink="/signup">
+              ĐĂNG KÍ
+            </button>
+          </div>
+          <div
+            class="box-border bg-blue-500 p-2 hover:bg-blue-400 rounded-sm w-28 text-center"
+          >
+            <button class="font-semibold text-white" routerLink="/login">
+              ĐĂNG NHẬP
+            </button>
+          </div>
+        </div>
+        } @if (isLogin === true) {
+        <div class="relative">
+          <div class="flex items-center">
+            <i
+              class="my-auto pi pi-bell cursor-pointer mr-4 p-text-secondary"
+              pBadge
+              style="font-size: 1.5rem"
+              [value]="countUnreadComments()"
+              (click)="toggle()"
+            ></i>
+          </div>
+          <div
+            class="absolute w-64 h-max bg-white border shadow-lg rounded-md z-50"
+            *ngIf="displaying"
+          >
+            <ng-container *ngIf="listComment && listComment.length > 0">
+              <div class="h-96 overflow-y-scroll overflow-auto">
+                <div
+                  *ngFor="let comment of listComment.reverse()"
+                  class="p-5"
+                  [ngClass]="{ 'bg-red-100': !comment.read }"
+                >
+                  <p class="mb-2">{{ comment.content }}</p>
+                  <p class="text-xs mb-2">
+                    <i class="fa-solid fa-clock"></i>{{ comment.created_At }}
+                  </p>
+                  <hr />
+                </div>
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="!listComment || listComment.length === 0">
+              <nz-empty></nz-empty>
+            </ng-container>
+          </div>
+        </div>
+
+        <div class="w-48">
+          <p-megaMenu
+            [model]="items"
+            [ngStyle]="{ background: 'transparent' }"
+          ></p-megaMenu>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+</nav>

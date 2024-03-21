@@ -1,0 +1,67 @@
+<!-- chat.component.html -->
+<app-navbar></app-navbar>
+<div class="pt-20">
+  <div class="flex">
+    <div class="w-1/4 bg-gray-100 p-1 border-t-red-50 border-b-red-50 border">
+      <h1 class="text-2xl font-bold mb-4">Đoạn chat</h1>
+      <div>
+        <input
+          type="text"
+          placeholder="Find name ..."
+          class="w-full mb-3 py-4 outline-none"
+          [(ngModel)]="searchName"
+          (keyup.enter)="handleSearch()"
+        />
+      </div>
+      <ul class="overflow-hidden overflow-y-scroll h-screen">
+        <li
+          *ngFor="let user of searchList"
+          class="cursor-pointer p-4 border-collapse border mb-2 bg-white"
+          [class.font-bold.bg-blue-200]="selectedUser === user.id"
+          (click)="handleUserSelect(user)"
+        >
+          {{ user.name }}
+        </li>
+      </ul>
+    </div>
+    <div class="flex-grow bg-gray-100">
+      <!-- Chat interface -->
+      <div class="h-screen flex flex-col justify-between bg-white">
+        <div class="overflow-y-auto px-4 pt-4" #chatContainer>
+          <div
+            *ngFor="let message of messages"
+            [class]="
+              message.message_side === 'sender'
+                ? 'flex justify-end mb-4'
+                : 'flex justify-start mb-4'
+            "
+          >
+            <div
+              [class]="
+                message.message_side === 'receiver'
+                  ? 'bg-blue-500 text-white rounded-lg py-2 px-4'
+                  : 'bg-gray-500 text-white rounded-lg py-2 px-4'
+              "
+            >
+              {{ message.content }}
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center bg-white border-t border-gray-200 p-4">
+          <input
+            type="text"
+            class="flex-grow border rounded-lg py-2 px-4 mr-2"
+            placeholder="Type your message..."
+            [(ngModel)]="newMessage"
+          />
+          <button
+            class="bg-blue-500 text-white py-2 px-4 rounded-lg"
+            (click)="sendMessage()"
+          >
+            <i class="pi pi-send" style="font-size: 1rem"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

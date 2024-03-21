@@ -1,0 +1,43 @@
+<div class="pl-3">
+  <h1 class="text-center mt-3 font-bold text-xl">
+    Tình trạng các đơn ứng tuyển
+  </h1>
+  <nz-table [nzShowPagination]="false" #basicTable [nzData]="listJob">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Tên công việc đăng tuyển</th>
+        <th>Email người ứng tuyển</th>
+        <th>Trạng thái</th>
+        <th>Ngày nộp cv</th>
+        <th>CV</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of listJob; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ data?.jobName }}</td>
+        <td>
+          {{ data?.email }}
+        </td>
+        <td>{{ data?.status }}</td>
+        <td>{{ data?.created_At }}</td>
+        <td>
+          <button
+            class="w-24 bg-green-500 hover:bg-green-300 text-white p-1 rounded-md"
+            (click)="dowloadCV(data?.id)"
+          >
+            Xem CV
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+  <div class="flex justify-center" *ngIf="totalPage > 0">
+    <nz-pagination
+      [nzPageIndex]="page"
+      [nzTotal]="totalPage * 10"
+      (nzPageIndexChange)="pageActive($event)"
+    ></nz-pagination>
+  </div>
+</div>

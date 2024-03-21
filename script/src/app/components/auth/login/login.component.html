@@ -1,0 +1,64 @@
+<app-navbar></app-navbar>
+<div class="flex justify-center pt-52 pb-44 bg-gray-100">
+  <form
+    style="width: 100%; background-color: white; padding: 20px"
+    nz-form
+    [formGroup]="validateForm"
+    class="login-form shadow-md rounded-md"
+  >
+  <nz-spin [nzSpinning]="isSpinning" [nzSize]="'large'" nzTip="Đang đăng nhập...">
+    <div class="text-center mb-4" style="width: 100%">
+      <h1 class="font-bold text-2xl">Đăng nhập</h1>
+    </div>
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Vui long nhập đúng định dạng email">
+        <nz-input-group nzPrefixIcon="user">
+          <input
+            type="text"
+            nz-input
+            formControlName="email"
+            placeholder="Email"
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Vui lòng không để trống!">
+        <nz-input-group nzPrefixIcon="lock">
+          <input
+            type="password"
+            nz-input
+            formControlName="password"
+            placeholder="Password"
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <div nz-row class="login-form-margin">
+      <div nz-col [nzSpan]="12">
+        <label nz-checkbox formControlName="remember">
+          <span>Remember me</span>
+        </label>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <a class="login-form-forgot" (click)="changePage()">Forgot password</a>
+      </div>
+    </div>
+    <button
+      nz-button
+      class="login-form-button login-form-margin"
+      [nzType]="'primary'"
+      (click)="submitForm()"
+    >
+      Log in
+    </button>
+    Or
+    <b
+      class="text-blue-600 hover:text-blue-400"
+      style="cursor: pointer"
+      routerLink="/signup"
+      >register now!</b
+    >
+    </nz-spin>
+  </form>
+</div>

@@ -1,0 +1,349 @@
+<div class="pl-3">
+  <h1 class="text-center mt-3 font-bold text-xl">
+    Các chuyên ngành hiện có trong công ty
+  </h1>
+  <button
+    class="bg-blue-500 hover:bg-blue-300 text-white p-1 rounded-md"
+    (click)="showModal()"
+  >
+    Đăng tuyển
+  </button>
+
+  <nz-table [nzShowPagination]="false" #basicTable [nzData]="listJob">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Tên</th>
+        <th>Chuyên ngành</th>
+        <th>Trình độ</th>
+        <th>Bằng cấp</th>
+        <th>Ứng tuyển trước</th>
+        <th>Trạng thái</th>
+        <th>Ngày tạo</th>
+        <th>Ngày cập nhập</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of listJob; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ data.name }}</td>
+        <td>
+          {{ data.categoryName }}
+        </td>
+        <td>{{ data.career_Level }}</td>
+        <td>{{ data.qualification }}</td>
+        <td>{{ data.apply_Before }}</td>
+        <td>{{ data.status }}</td>
+        <td>{{ data.create_At }}</td>
+        <td>{{ data.update_At }}</td>
+
+        <td>
+          <button
+            class="w-24 bg-blue-500 hover:bg-blue-300 text-white p-1 rounded-md mr-5"
+            (click)="showModalUpdate(data.id)"
+          >
+            Cập nhập
+          </button>
+          <button
+            class="w-24 bg-red-500 hover:bg-red-300 text-white p-1 rounded-md"
+            (click)="deleteJob(data.id)"
+          >
+            Xóa
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+  <div class="flex justify-center" *ngIf="totalPage > 0">
+    <nz-pagination
+      [nzPageIndex]="page"
+      [nzTotal]="totalPage * 10"
+      (nzPageIndexChange)="pageActive($event)"
+    ></nz-pagination>
+  </div>
+  <nz-modal
+    [(nzVisible)]="isVisibleAdd"
+    nzTitle="Tạo một chuyên ngành mới"
+    (nzOnCancel)="handleCancel()"
+    (nzOnOk)="handleOk()"
+  >
+    <nz-spin [nzSpinning]="isAddSpinning" [nzSize]="'large'" nzTip="Đang Thêm">
+      <ng-container *nzModalContent>
+        <form [formGroup]="addForm">
+          <div class="grid grid-cols-1 mb-2">
+            <label for="name" class="block">Tên công việc</label>
+            <input
+              type="text"
+              id="name"
+              class="w-full border border-gray-300 rounded-md px-3 py-2 outline-blue-300"
+              formControlName="name"
+            />
+          </div>
+          <div class="grid grid-cols-1">
+            <label for="Job_Type" class="block">Loại công việc</label>
+            <select
+              *ngIf="jobType"
+              formControlName="Job_Type"
+              class="w-full border border-gray-300 rounded-md px-3 py-2 outline-blue-300"
+            >
+              <option *ngFor="let job of jobType" [value]="job">
+                {{ job }}
+              </option>
+            </select>
+          </div>
+          <div class="grid grid-cols-1">
+            <label for="category" class="block">Phân loại</label>
+            <select
+              *ngIf="listJobCategory"
+              formControlName="category"
+              class="w-full border border-gray-300 rounded-md px-3 py-2 outline-blue-300"
+            >
+              <option
+                *ngFor="let category of listJobCategory"
+                [value]="category.id"
+              >
+                {{ category.name }}
+              </option>
+            </select>
+          </div>
+          <div class="grid grid-cols-1">
+            <label for="category" class="block">Chi nhánh</label>
+            <select
+              *ngIf="branchList"
+              formControlName="branch"
+              class="w-full border border-gray-300 rounded-md px-3 py-2 outline-blue-300"
+            >
+              <option *ngFor="let branch of branchList" [value]="branch.id">
+                {{ branch.name }}
+              </option>
+            </select>
+          </div>
+          <div class="grid grid-cols-1">
+            <label for="Career_Level" class="block">Trình độ</label>
+            <select
+              formControlName="Career_Level"
+              class="w-full border border-gray-300 rounded-md px-3 py-2 outline-blue-300"
+            >
+              <option *ngFor="let level of careerLevels" [value]="level">
+                {{ level }}
+              </option>
+            </select>
+          </div>
+          <div class="grid grid-cols-1">
+            <label for="Experience" class="block">Kinh nghiệm</label>
+            <select
+              formControlName="experience"
+              class="w-full border border-gray-300 rounded-md px-3 py-2 outline-blue-300"
+            >
+              <option
+                *ngFor="let exp of experiences; let i = index"
+                [value]="i"
+              >
+                {{ exp }}
+              </option>
+            </select>
+          </div>
+          <div class="grid grid-cols-1">
+            <label for="offerSalary" class="block">Lương</label>
+            <select
+              formControlName="offerSalary"
+              class="w-full border border-gray-300 rounded-md px-3 py-2 outline-blue-300"
+            >
+              <option
+                *ngFor="let salary of offerSalaries"
+                [value]="salary.value"
+              >
+                {{ salary.label }}
+              </option>
+            </select>
+          </div>
+          <div class="grid grid-cols-1">
+            <label for="qualification" class="block">Trình độ chuyên môn</label>
+            <select
+              formControlName="qualification"
+              class="w-full border border-gray-300 rounded-md px-3 py-2 outline-blue-300"
+            >
+              <option *ngFor="let qual of qualifications" [value]="qual.value">
+                {{ qual.label }}
+              </option>
+            </select>
+          </div>
+          <div class="grid grid-cols-1">
+            <label for="Apply_Before" class="block">Thời hạn hết hạn</label>
+            <input
+              type="date"
+              id="Apply_Before"
+              class="w-full border border-gray-300 rounded-md px-3 py-2 outline-blue-300"
+              formControlName="Apply_Before"
+            />
+          </div>
+          <div class="grid grid-cols-1">
+            <label for="address" class="block">Địa chỉ</label>
+            <input
+              id="address"
+              class="w-full border border-gray-300 rounded-md px-3 py-2 outline-blue-300"
+              formControlName="address"
+              rows="4"
+            />
+          </div>
+          <div class="grid grid-cols-1">
+            <label for="description" class="block">Mô tả</label>
+            <textarea
+              id="description"
+              class="w-full border border-gray-300 rounded-md px-3 py-2 outline-blue-300"
+              formControlName="description"
+              rows="4"
+            ></textarea>
+          </div>
+        </form>
+      </ng-container>
+    </nz-spin>
+  </nz-modal>
+
+  <nz-modal
+    [(nzVisible)]="isVisibleUpdate"
+    nzTitle="Cập nhập"
+    (nzOnCancel)="handleCancelUpdate()"
+    (nzOnOk)="handleOkUpdate()"
+  >
+    <nz-spin
+      [nzSpinning]="isUpdateSpinning"
+      [nzSize]="'large'"
+      nzTip="Đang cập nhập"
+    >
+      <ng-container *nzModalContent>
+        <!-- <form [formGroup]="updateForm"> -->
+        <form [formGroup]="updateForm">
+          <div class="grid grid-cols-1 mb-2">
+            <label for="name" class="block">Tên công việc</label>
+            <input
+              type="text"
+              id="name"
+              class="w-full border border-gray-300 rounded-md px-3 py-2 outline-blue-300"
+              formControlName="name"
+            />
+          </div>
+          <div class="grid grid-cols-1">
+            <label for="Job_Type" class="block">Loại công việc</label>
+            <select
+              *ngIf="jobType"
+              formControlName="Job_Type"
+              class="w-full border border-gray-300 rounded-md px-3 py-2 outline-blue-300"
+            >
+              <option *ngFor="let job of jobType" [value]="job">
+                {{ job }}
+              </option>
+            </select>
+          </div>
+          <div class="grid grid-cols-1">
+            <label for="category" class="block">Phân loại</label>
+            <select
+              *ngIf="listJobCategory"
+              formControlName="category"
+              class="w-full border border-gray-300 rounded-md px-3 py-2 outline-blue-300"
+            >
+              <option
+                *ngFor="let category of listJobCategory"
+                [value]="category.id"
+              >
+                {{ category.name }}
+              </option>
+            </select>
+          </div>
+          <div class="grid grid-cols-1">
+            <label for="category" class="block">Chi nhánh</label>
+            <select
+              *ngIf="branchList"
+              formControlName="branch"
+              class="w-full border border-gray-300 rounded-md px-3 py-2 outline-blue-300"
+            >
+              <option *ngFor="let branch of branchList" [value]="branch.id">
+                {{ branch.name }}
+              </option>
+            </select>
+          </div>
+          <div class="grid grid-cols-1">
+            <label for="Career_Level" class="block">Trình độ</label>
+            <select
+              formControlName="Career_Level"
+              class="w-full border border-gray-300 rounded-md px-3 py-2 outline-blue-300"
+            >
+              <option *ngFor="let level of careerLevels" [value]="level">
+                {{ level }}
+              </option>
+            </select>
+          </div>
+          <div class="grid grid-cols-1">
+            <label for="Experience" class="block">Kinh nghiệm</label>
+            <select
+              formControlName="experience"
+              class="w-full border border-gray-300 rounded-md px-3 py-2 outline-blue-300"
+            >
+              <option
+                *ngFor="let exp of experiences; let i = index"
+                [value]="i"
+              >
+                {{ exp }}
+              </option>
+            </select>
+          </div>
+          <div class="grid grid-cols-1">
+            <label for="offerSalary" class="block">Lương</label>
+            <select
+              formControlName="offerSalary"
+              class="w-full border border-gray-300 rounded-md px-3 py-2 outline-blue-300"
+            >
+              <option
+                *ngFor="let salary of offerSalaries"
+                [value]="salary.value"
+              >
+                {{ salary.label }}
+              </option>
+            </select>
+          </div>
+          <div class="grid grid-cols-1">
+            <label for="qualification" class="block">Trình độ chuyên môn</label>
+            <select
+              formControlName="qualification"
+              class="w-full border border-gray-300 rounded-md px-3 py-2 outline-blue-300"
+            >
+              <option *ngFor="let qual of qualifications" [value]="qual.value">
+                {{ qual.label }}
+              </option>
+            </select>
+          </div>
+          <div class="grid grid-cols-1">
+            <label for="Apply_Before" class="block">Thời hạn hết hạn</label>
+            <input
+              type="date"
+              id="Apply_Before"
+              class="w-full border border-gray-300 rounded-md px-3 py-2 outline-blue-300"
+              formControlName="Apply_Before"
+            />
+          </div>
+          <div class="grid grid-cols-1">
+            <label for="address" class="block">Địa chỉ</label>
+            <input
+              id="address"
+              class="w-full border border-gray-300 rounded-md px-3 py-2 outline-blue-300"
+              formControlName="address"
+              rows="4"
+            />
+          </div>
+          <div class="grid grid-cols-1">
+            <label for="description" class="block">Mô tả</label>
+            <textarea
+              id="description"
+              class="w-full border border-gray-300 rounded-md px-3 py-2 outline-blue-300"
+              formControlName="description"
+              rows="4"
+            ></textarea>
+          </div>
+        </form>
+      </ng-container>
+    </nz-spin>
+  </nz-modal>
+</div>
+
+<!-- (change)="onFileSelected($event)" -->

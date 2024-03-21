@@ -1,0 +1,371 @@
+<div class="flex-grow mb-10">
+  <app-navbar></app-navbar>
+  <nz-spin
+    [nzSpinning]="isSpinning"
+    [nzSize]="'large'"
+    nzTip="Đang gửi mã xác thực..."
+  >
+    <div class="mt-24">
+      <div class="w-full my-auto flex items-center justify-center gap-5 mb-20">
+        <!-- left -->
+        <div class="w-1/2 flex flex-col gap-8">
+          <div class="my-auto">
+            <div class="w-full shadow-2xl p-5 rounded-md">
+              <div class="font-bold text-2xl mb-8">
+                Cài đặt thông tin cá nhân
+              </div>
+
+              <div class="mb-7">
+                <label for="firstName">Tên</label>
+                <br />
+
+                <input
+                  class="rounded-md outline-none border w-full py-2"
+                  [value]="user?.firstName"
+                  disabled
+                />
+              </div>
+
+              <div class="mb-7">
+                <label for="lastName">Họ</label>
+                <br />
+                <input
+                  class="rounded-md outline-none border w-full py-2"
+                  [value]="user?.lastName"
+                  disabled
+                />
+              </div>
+
+              <div class="mb-7">
+                <label for="phoneNumber">Số điện thoại</label>
+                <br />
+                <input
+                  class="rounded-md outline-none border w-full py-2"
+                  [value]="user?.phoneNumber"
+                  disabled
+                />
+              </div>
+
+              <div class="mb-7">
+                <label for="gender">Giới tính</label>
+                <br />
+                <input
+                  class="rounded-md outline-none border w-full py-2"
+                  [value]="gender === true ? 'Nam' : 'Nữ'"
+                  disabled
+                />
+              </div>
+              <div class="mb-7">
+                <label for="address">Địa chỉ</label>
+                <br />
+                <input
+                  class="rounded-md outline-none border w-full py-2"
+                  [value]="user?.address"
+                  disabled
+                />
+              </div>
+              <div>
+                <button nz-button nzType="primary" (click)="showModal()">
+                  Chỉnh sửa
+                </button>
+              </div>
+            </div>
+          </div>
+          <nz-modal
+            [(nzVisible)]="isVisible"
+            nzTitle="Chỉnh sửa hồ sơ cá nhân"
+            nzOkText="Cập nhập"
+            nzCancelText="Hủy"
+            (nzOnOk)="handleOk()"
+            (nzOnCancel)="handleCancel()"
+          >
+            <ng-container *nzModalContent>
+              <nz-spin
+                [nzSpinning]="isSpinningUpdateInfo"
+                [nzSize]="'large'"
+                nzTip="Đang cập nhập..."
+              >
+                <form [formGroup]="formProfile" class="my-auto">
+                  <div>
+                    <div class="mb-7">
+                      <label for="firstName">Tên</label>
+                      <br />
+
+                      <input
+                        class="rounded-md outline-none border w-full py-2"
+                        id="firstName"
+                        formControlName="firstName"
+                        type="text"
+                        placeholder="Điền tên của bạn..."
+                      />
+                    </div>
+
+                    <div class="mb-7">
+                      <label for="lastName">Họ</label>
+                      <br />
+                      <input
+                        class="rounded-md outline-none border w-full py-2"
+                        id="lastName"
+                        formControlName="lastName"
+                        type="text"
+                        placeholder="Điền họ của bạn..."
+                      />
+                    </div>
+
+                    <div class="mb-7">
+                      <label for="phoneNumber">Số điện thoại</label>
+                      <br />
+                      <input
+                        class="rounded-md outline-none border w-full py-2"
+                        id="phoneNumber"
+                        placeholder="Điền số điện thoại của bạn"
+                        formControlName="phoneNumber"
+                        type="text"
+                      />
+                    </div>
+
+                    <div class="mb-7">
+                      <label for="gender">Giới tính</label>
+                      <br />
+                      <nz-radio-group
+                        formControlName="gender"
+                        nzButtonStyle="solid"
+                      >
+                        <label nz-radio-button [nzValue]="true">Nam</label>
+                        <label nz-radio-button [nzValue]="false">Nữ</label>
+                      </nz-radio-group>
+                    </div>
+                    <div class="mb-7">
+                      <label for="address">Địa chỉ</label>
+                      <br />
+                      <input
+                        class="rounded-md outline-none border w-full py-2"
+                        placeholder="Điền địa chỉ của bạn"
+                        id="address"
+                        type="text"
+                        formControlName="address"
+                      />
+                    </div>
+                  </div>
+                </form>
+              </nz-spin>
+            </ng-container>
+          </nz-modal>
+        </div>
+
+        <!-- right -->
+        <div class="w-1/3 h-full shadow-2xl p-5">
+          <nz-spin
+            [nzSpinning]="isSpinningCvAndAvatar"
+            [nzSize]="'large'"
+            nzTip="Đang cập nhập..."
+          >
+            <div class="w-full rounded-md">
+              <div class="flex gap-5">
+                <div class="flex flex-col gap-3 items-center">
+                  <div>
+                    @if(user.avatar !== null){
+                    <img
+                      [src]="'data:image/png;base64,'+user.avatar"
+                      class="rounded-full h-20 w-20 mt-5"
+                      alt=""
+                    />
+                    }@else {
+                    <img
+                      src="assets/images/avatar.png"
+                      class="rounded-full h-20 w-20 mt-5"
+                      alt=""
+                    />
+                    }
+                  </div>
+                  <div>
+                    <button
+                      class="bg-blue-500 hover:bg-blue-300 cursor-pointer p-2 text-white rounded-md"
+                      (click)="showModalUpdateAvatar()"
+                    >
+                      Cập nhập avatar
+                    </button>
+                  </div>
+                </div>
+
+                <div class="my-3">
+                  <div *ngIf="checkUserVerify; else loadingContent">
+                    <div *ngIf="!checkUserVerify.verified">
+                      <p class="text-gray-500">Chào mừng bạn trở lại,</p>
+                      <div class="my-3">
+                        @if(isUpdateUserName === false){
+                        <div class="flex items-center gap-3">
+                          <p class="font-semibold">{{ username }}</p>
+                          <i
+                            class="fa-solid fa-pencil text-xs cursor-pointer"
+                            pTooltip="Chỉnh sửa username"
+                            tooltipPosition="top"
+                            (click)="clickChangeUserName()"
+                          ></i>
+                        </div>
+                        } @else if (isUpdateUserName === true) {
+                        <div>
+                          <input
+                            type="text"
+                            [(ngModel)]="changeUsername"
+                            class="outline-none border my-2 py-2"
+                          />
+                          <button
+                            (click)="cancelSaveUsername()"
+                            class="bg-red-500 hover:bg-red-300 text-white py-2 px-4"
+                          >
+                            Hủy
+                          </button>
+                          <button
+                            (click)="saveUsername()"
+                            class="bg-blue-500 hover:bg-blue-300 text-white py-2 px-4"
+                          >
+                            Lưu
+                          </button>
+                        </div>
+                        }
+                      </div>
+                      <p class="bg-red-500 text-white p-1 w-fit rounded-md">
+                        Tài khoản chưa xác thực
+                      </p>
+                      <p
+                        class="mt-2 bg-blue-500 hover:bg-blue-300 cursor-pointer text-white p-1 w-fit rounded-md"
+                        (click)="verify()"
+                      >
+                        Nhấn vào đây để xác thực tài khoản
+                      </p>
+                      @if(user.cv !== null){
+                      <p
+                        class="bg-gray-500 hover:bg-gray-300 mt-2 cursor-pointer text-white p-1 w-fit rounded-md"
+                        (click)="downloadCV()"
+                      >
+                        Tải CV về máy
+                      </p>
+                      }
+                    </div>
+                    <div *ngIf="checkUserVerify.verified">
+                      <p class="text-gray-500">Chào mừng bạn trở lại,</p>
+                      <div class="my-3">
+                        @if(isUpdateUserName === false){
+                        <div class="flex items-center gap-3">
+                          <p class="font-semibold">{{ username }}</p>
+                          <i
+                            class="fa-solid fa-pencil text-xs cursor-pointer"
+                            pTooltip="Chỉnh sửa username"
+                            tooltipPosition="top"
+                            (click)="clickChangeUserName()"
+                          ></i>
+                        </div>
+                        } @else if (isUpdateUserName === true) {
+                        <div>
+                          <input
+                            type="text"
+                            [(ngModel)]="changeUsername"
+                            class="outline-none border my-2 py-2"
+                          />
+                          <button
+                            (click)="cancelSaveUsername()"
+                            class="bg-red-500 hover:bg-red-300 text-white py-2 px-4"
+                          >
+                            Hủy
+                          </button>
+                          <button
+                            (click)="saveUsername()"
+                            class="bg-blue-500 hover:bg-blue-300 text-white py-2 px-4"
+                          >
+                            Lưu
+                          </button>
+                        </div>
+                        }
+                      </div>
+                      <p class="bg-green-500 text-white p-1 w-fit rounded-md">
+                        Tài khoản của bạn đã được xác thực
+                      </p>
+                      @if(user.cv !== null){
+                      <p
+                        class="bg-gray-500 hover:bg-gray-300 mt-2 cursor-pointer text-white p-1 w-fit rounded-md"
+                        (click)="downloadCV()"
+                      >
+                        Tải CV về máy
+                      </p>
+                      }
+                    </div>
+                  </div>
+                  <ng-template #loadingContent>
+                    <nz-spin></nz-spin>
+                  </ng-template>
+                </div>
+              </div>
+              <div class="pt-20 flex justify-center items-center h-fit">
+                @if(user.cv === null){
+                <div class="scale-50">
+                  <p class="font-bold text-2xl">
+                    Bạn chưa tải CV lên , bạn có thể tải CV lên ở đây(CV dạng
+                    file pdf)
+                  </p>
+                  <p-fileUpload
+                    chooseLabel="Chọn file tải lên"
+                    name="demo[]"
+                    url="https://www.primefaces.org/cdn/api/upload.php"
+                    accept="application/pdf"
+                    [maxFileSize]="5000000"
+                    (onUpload)="onUpload($event)"
+                    class="w-full h-32"
+                  ></p-fileUpload>
+                </div>
+                } @else if (user.cv !== null) {
+
+                <div class="scale-50">
+                  <p class="font-bold text-2xl">
+                    Cập nhập CV(CV dạng file pdf)
+                  </p>
+                  <p-fileUpload
+                    chooseLabel="Chọn file tải lên"
+                    name="demo[]"
+                    url="https://www.primefaces.org/cdn/api/upload.php"
+                    accept="application/pdf"
+                    [maxFileSize]="5000000"
+                    (onUpload)="onUpload($event)"
+                    class="w-full h-32"
+                  ></p-fileUpload>
+                </div>
+
+                }
+              </div>
+            </div>
+          </nz-spin>
+
+          <nz-modal
+            [(nzVisible)]="isVisibleInUpdateAvatar"
+            [nzFooter]="null"
+            (nzOnCancel)="handleCancelUpdateAvatar()"
+          >
+            <nz-spin
+              [nzSpinning]="isSpinningUpdateAvatar"
+              [nzSize]="'large'"
+              nzTip="Đang gửi mã xác thực..."
+            >
+              <ng-container *nzModalContent>
+                <nz-spin
+                  [nzSpinning]="isSpinningUpdateAvatar"
+                  [nzSize]="'large'"
+                  nzTip="Đang cập nhập..."
+                >
+                  <p-fileUpload
+                    chooseLabel="Chọn ảnh"
+                    name="demo[]"
+                    url="https://www.primefaces.org/cdn/api/upload.php"
+                    accept="image/jpeg, image/png, image/jpg"
+                    [maxFileSize]="2000000"
+                    (onUpload)="onUploadAvatar($event)"
+                    class="w-full h-32"
+                  ></p-fileUpload>
+                </nz-spin>
+              </ng-container>
+            </nz-spin>
+          </nz-modal>
+        </div>
+      </div>
+    </div>
+  </nz-spin>
+</div>

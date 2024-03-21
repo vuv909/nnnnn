@@ -1,0 +1,139 @@
+<app-navbar></app-navbar>
+<div class="pt-20 flex">
+  <div class="wrapper">
+    <ul
+      class="min-h-screen h-full"
+      nz-menu
+      nzMode="inline"
+      nzTheme="light"
+      [nzInlineCollapsed]="isCollapsed"
+    >
+      <li nz-submenu nzTitle="Quản lí công việc" nzIcon="form">
+        <ul>
+          <li
+            nz-menu-item
+            nz-tooltip=""
+            nzTooltipTitle="Các chuyên ngành công việc của công ty"
+            (click)="jobCategory($event)"
+          >
+            Các chuyên ngành công việc của công ty
+          </li>
+          <li
+            *ngIf="role === 'ADMIN'"
+            nz-menu-item
+            nz-tooltip=""
+            nzTooltipTitle="Các công việc đã đăng tuyển"
+            (click)="viewJob($event)"
+          >
+            Tất cả các công việc đang đăng tuyển
+          </li>
+          <li
+            *ngIf="role === 'EMPLOYER'"
+            nz-menu-item
+            nz-tooltip=""
+            nzTooltipTitle="Các công việc đã đăng tuyển"
+            (click)="manageJob($event)"
+          >
+            Các công việc đã đăng tuyển của hr
+          </li>
+        </ul>
+      </li>
+
+      <li
+        *ngIf="role === 'ADMIN'"
+        nz-submenu
+        nzTitle="Tình trạng ứng tuyển"
+        nzIcon="form"
+      >
+        <ul>
+          <li
+            nz-menu-item
+            nz-tooltip=""
+            nzTooltipTitle="Xem chi tiết"
+            (click)="viewJobApplyAdmin($event)"
+          >
+            Xem chi tiết
+          </li>
+        </ul>
+      </li>
+
+      <li
+        *ngIf="role === 'EMPLOYER'"
+        nz-submenu
+        nzTitle="Các đơn ứng tuyển cần xử lí"
+        nz-tooltip=""
+        nzTooltipTitle="Các đơn ứng tuyển cần xử lí"
+        nzIcon="appstore"
+      >
+        <ul>
+          <li nz-menu-item (click)="expiredJob($event)">
+            Các đơn quá hạn xử lí
+          </li>
+          <li nz-menu-item (click)="pendingJob($event)">
+            Các đơn đang chờ xử lí
+          </li>
+          <li nz-menu-item (click)="approveJob($event)">Các đơn đã duyệt</li>
+          <li nz-menu-item (click)="refuseJob($event)">Các đơn từ chối</li>
+          <li nz-menu-item (click)="passJob($event)">Các đơn pass phỏng vấn</li>
+          <li nz-menu-item (click)="notPass($event)" pTooltip="Các đơn không pass phỏng vấn">
+            Các đơn không pass phỏng vấn
+          </li>
+        </ul>
+      </li>
+      <li
+        *ngIf="role === 'ADMIN'"
+        nz-submenu
+        nzTitle="Quản lí tài khoản"
+        nz-tooltip=""
+        nzTooltipTitle="Quản lí tài khoản"
+        nzIcon="appstore"
+      >
+        <ul>
+          <li nz-menu-item (click)="activeAccount($event)">
+            Các tài khoản đang hoạt động
+          </li>
+          <li nz-menu-item (click)="blockAccount($event)">
+            Các tài khoản đã bị chặn
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <div class="flex-grow" *ngIf="defaultComponent === manage_job">
+    <app-manage-job></app-manage-job>
+  </div>
+  <div class="flex-grow" *ngIf="defaultComponent === job_category">
+    <app-job-category></app-job-category>
+  </div>
+  <div class="flex-grow" *ngIf="defaultComponent === approve_job">
+    <app-approve-job></app-approve-job>
+  </div>
+  <div class="flex-grow" *ngIf="defaultComponent === pending_job">
+    <app-peding-approve-job></app-peding-approve-job>
+  </div>
+  <div class="flex-grow" *ngIf="defaultComponent === refuse_job">
+    <app-refuse-approve-job></app-refuse-approve-job>
+  </div>
+  <div class="flex-grow" *ngIf="defaultComponent === active_account">
+    <app-manage-account></app-manage-account>
+  </div>
+  <div class="flex-grow" *ngIf="defaultComponent === block_account">
+    <app-manage-account-block></app-manage-account-block>
+  </div>
+  <div class="flex-grow" *ngIf="defaultComponent === view_job_admin">
+    <app-viewjob-admin></app-viewjob-admin>
+  </div>
+  <div class="flex-grow" *ngIf="defaultComponent === expired_job">
+    <app-expired-request></app-expired-request>
+  </div>
+  <div class="flex-grow" *ngIf="defaultComponent === view_job_apply_admin">
+    <app-view-apply-admin></app-view-apply-admin>
+  </div>
+  <div class="flex-grow" *ngIf="defaultComponent === pass">
+    <app-pass></app-pass>
+  </div>
+  <div class="flex-grow" *ngIf="defaultComponent === notpass">
+    <app-notpass></app-notpass>
+  </div>
+</div>

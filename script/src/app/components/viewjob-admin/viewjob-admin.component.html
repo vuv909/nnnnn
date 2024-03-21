@@ -1,0 +1,44 @@
+<div class="pl-3">
+  <h1 class="text-center mt-3 font-bold text-xl">
+    Các chuyên ngành Hr đã đăng tuyển hiện có trong công ty
+  </h1>
+  <nz-table [nzShowPagination]="false" #basicTable [nzData]="listJob">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Tên</th>
+        <th>Chuyên ngành</th>
+        <th>Trình độ</th>
+        <th>Bằng cấp</th>
+        <th>Ứng tuyển trước</th>
+        <th>Trạng thái</th>
+        <th>Ngày tạo</th>
+        <th>Ngày cập nhập</th>
+        <th>Hr email</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of listJob; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ data.name }}</td>
+        <td>
+          {{ data.categoryName }}
+        </td>
+        <td>{{ data.career_Level }}</td>
+        <td>{{ data.qualification }}</td>
+        <td>{{ data.apply_Before }}</td>
+        <td>{{ data.status }}</td>
+        <td>{{ data.create_At }}</td>
+        <td>{{ data.update_At }}</td>
+        <td>{{ data.hrEmail }}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+  <div class="flex justify-center" *ngIf="totalPages > 0">
+    <nz-pagination
+      [nzPageIndex]="page"
+      [nzTotal]="totalPages * 10"
+      (nzPageIndexChange)="pageActive($event)"
+    ></nz-pagination>
+  </div>
+</div>

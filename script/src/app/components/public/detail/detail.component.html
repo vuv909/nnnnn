@@ -1,0 +1,149 @@
+<div class="flex-grow mb-10">
+  <app-navbar></app-navbar>
+
+  <div class="mt-28 w-11/12 mx-auto">
+    <div class="">
+      <h1 class="text-3xl font-bold mt-10">{{ detailWork?.name }}</h1>
+      <br />
+      <div class="flex items-center gap-36">
+        <div class="w-1/2">
+          <span class="text-white bg-black p-1 mr-7 rounded-md">{{
+            detailWork?.job_Type
+          }}</span>
+          <span class="mr-7"
+            ><i class="fa-regular fa-calendar"></i>Ngày tạo:&nbsp;{{
+              detailWork?.create_At
+            }}</span
+          >
+          <span
+            ><i class="fa-regular fa-calendar"></i>&nbsp;Đóng tuyển dụng vào :
+            {{ detailWork?.apply_Before }}</span
+          >
+        </div>
+        <div *ngIf="role === 'JOBSEEKER'" class="w-1/2">
+          <ng-container *ngIf="validJob === true && detailWork.delete === false">
+            <button
+            class="border border-red-500 bg-red-200 p-2 rounded-md mr-2 font-semibold hover:bg-opacity-80"
+            *ngIf="isFavourited === false"
+            (click)="favourite(detailWork)"
+          >
+            <p>
+              <i class="fa-solid fa-heart text-red-500"></i>&nbsp;Thêm vào yêu
+              thích
+            </p>
+          </button>
+
+          <button
+            class="border border-red-500 bg-red-200 p-2 rounded-md mr-2 font-semibold hover:bg-opacity-80"
+            *ngIf="isFavourited === true "
+            (click)="deleteJob(detailWork)"
+          >
+            <p>
+              <i class="fa-solid fa-heart text-red-500"></i>&nbsp;Xóa khỏi yêu
+              thích
+            </p>
+          </button>
+          </ng-container>
+          <button
+            *ngIf="validJob === true && detailWork.delete === false"
+            class="border border-gray-300 p-2 rounded-md font-semibold text-white bg-black hover:bg-opacity-80"
+            (click)="apply()"
+          >
+            <p>Ứng tuyển</p>
+          </button>
+          <button
+            *ngIf="validJob === false && detailWork.delete === false"
+            class="border border-gray-300 p-2 rounded-md font-semibold text-white bg-red-600 hover:bg-opacity-80"
+          >
+            <p>Hết hạn</p>
+          </button>
+          
+          <button
+            *ngIf="detailWork.delete === true"
+            class="border border-gray-300 p-2 rounded-md font-semibold text-white bg-red-600 hover:bg-opacity-80"
+          >
+            <p>Công việc đã bị gỡ</p>
+          </button>
+        </div>
+      </div>
+    </div>
+    <hr class="my-10" />
+
+    <div class="flex">
+      <div class="w-1/2">
+        <p>
+          {{ detailWork?.description }}
+        </p>
+      </div>
+      <div class="w-1/2">
+        <div class="ml-10 shadow-xl border p-2">
+          <div class="flex items-center gap-2">
+            <div>
+              <i
+                class="fa-solid fa-money-bill-wave text-2xl text-green-700"
+              ></i>
+            </div>
+            <div>
+              <p class="font-semibold text-lg">Tiền lương dự tính</p>
+              <p class="text-gray-500">{{ detailWork?.offer_Salary }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr class="mt-20" />
+
+    <!-- related job -->
+
+    <div *ngIf="listJobCategory">
+      <div class="my-5 font-bold text-xl">
+        <h1>Các công việc liên quan</h1>
+      </div>
+      <div
+        *ngIf="!listJobCategory || listJobCategory.length === 0"
+        class="flex items-center justify-center mt-16 w-full"
+      >
+        <nz-empty nzNotFoundContent="No data"></nz-empty>
+      </div>
+      <div *ngFor="let job of listJobCategory">
+        <div *ngIf="job.name !== detailWork.name">
+          <div
+            class="w-full cursor-pointer flex justify-between p-1"
+            (click)="clickItem(job)"
+          >
+            <div>
+              <div>
+                <h1
+                  class="font-bold hover:opacity-75 cursor-pointer text-xl underline text-blue-600"
+                >
+                  {{ job?.name }}
+                </h1>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nz-modal
+    [(nzVisible)]="isVisible"
+    nzTitle="Ứng tuyển"
+    (nzOnCancel)="handleCancel()"
+    (nzOnOk)="handleOk()"
+  >
+    <nz-spin [nzSpinning]="isSpinning" [nzSize]="'large'" nzTip="Đang cập nhập">
+      <ng-container *nzModalContent>
+        <div class="grid grid-cols-1 mb-2">
+          <label for="name" class="block">Ghi chú</label>
+          <input
+            type="text"
+            id="name"
+            class="w-full border border-gray-300 rounded-md px-3 py-2 outline-blue-300"
+            [(ngModel)]="coverLetter"
+          />
+        </div>
+      </ng-container>
+    </nz-spin>
+  </nz-modal>
+</div>

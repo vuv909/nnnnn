@@ -1,0 +1,209 @@
+<div class="flex-grow mb-10">
+  <app-navbar></app-navbar>
+
+  <div class="mt-24">
+    <div>
+      <div class="px-20">
+        <h1 class="font-bold text-3xl text-center">Tìm kiếm công việc</h1>
+        <div>
+          <form [formGroup]="searchForm" class="mt-10">
+            <div class="flex items-center justify-center">
+              <div>
+                <div class="flex gap-5 items-center justify-center">
+                  <div>
+                    <div class="border border-gray-300 rounded-sm pl-2">
+                      <i class="fa-solid fa-magnifying-glass"></i>
+                      <input
+                        type="text"
+                        se
+                        placeholder="Điền từ khóa để tìm kiếm ..."
+                        formControlName="textSearch"
+                        class="outline-none p-2 px-5"
+                        pTooltip="Nhập từ khóa để tìm kiếm công việc bạn muốn"
+                        tooltipPosition="top"
+                      />
+                    </div>
+                  </div>
+                  <div class="border border-gray-300 w-52 rounded-sm">
+                    <select
+                      class="w-full h-full outline-none p-2"
+                      pTooltip="Loại công việc"
+                      tooltipPosition="top"
+                      formControlName="category"
+                    >
+                      <option value=""></option>
+                      <option
+                        *ngFor="let cate of listCategory"
+                        [value]="cate?.id"
+                      >
+                        {{ cate?.name }}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="border border-gray-300 w-52 rounded-sm">
+                    <select
+                      class="w-full h-full outline-none p-2"
+                      formControlName="location"
+                      tooltipPosition="top"
+                      pTooltip="Chi nhánh"
+                    >
+                      <option value=""></option>
+                      <option
+                        *ngFor="let branch of branchList"
+                        [value]="branch?.id"
+                      >
+                        {{ branch?.name }}
+                      </option>
+                    </select>
+                  </div>
+
+                  <div class="">
+                    <i
+                      pTooltip="Tìm kiếm nâng cao"
+                      tooltipPosition="top"
+                      class="text-xl fa-solid fa-filter cursor-pointer"
+                      (click)="advanced()"
+                    ></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            @if(advancedSearch === true){
+            <div class="flex gap-5 mt-5 items-center justify-center">
+              <div class="border border-gray-300 w-52 rounded-sm">
+                <select
+                  class="w-full h-full outline-none p-2"
+                  pTooltip="Trình độ"
+                  tooltipPosition="top"
+                  formControlName="careerLevel"
+                >
+                  <option value="" selected></option>
+                  <option *ngFor="let carrer of careerLevels" [value]="carrer">
+                    {{ carrer }}
+                  </option>
+                </select>
+              </div>
+              <div class="border border-gray-300 w-52 rounded-sm">
+                <select
+                  class="w-full h-full outline-none p-2"
+                  pTooltip="Số năm kinh nghiệm"
+                  tooltipPosition="top"
+                  formControlName="experience"
+                >
+                  <option value=""></option>
+                  <option
+                    *ngFor="let expe of experiences"
+                    [value]="expe?.value"
+                  >
+                    {{ expe?.name }}
+                  </option>
+                </select>
+              </div>
+              <div class="border border-gray-300 w-52 rounded-sm">
+                <select
+                  class="w-full h-full outline-none p-2"
+                  pTooltip="Lương"
+                  tooltipPosition="top"
+                  formControlName="offerSalary"
+                >
+                  <option value=""></option>
+                  <option
+                    *ngFor="let salary of offerSalaries"
+                    [value]="salary.value"
+                  >
+                    {{ salary.value }}
+                  </option>
+                </select>
+              </div>
+              <div class="border border-gray-300 w-52 rounded-sm">
+                <select
+                  class="w-full h-full outline-none p-2"
+                  pTooltip="Bằng cấp"
+                  tooltipPosition="top"
+                  formControlName="qualification"
+                >
+                  <option value=""></option>
+                  <option
+                    *ngFor="let qualification of qualifications"
+                    [value]="qualification.value"
+                  >
+                    {{ qualification.value }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            }
+            <div class="flex items-center justify-center mt-5">
+              <button
+                tooltipPosition="top"
+                pTooltip="bấm nút để thực hiện tìm kiếm"
+                class="bg-blue-500 hover:bg-blue-300 text-white font-semibold py-2 px-5 rounded-full"
+                (click)="submitForm()"
+              >
+                Tìm kiếm
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div
+        class="mt-10 flex items-center justify-center flex-wrap w-full px-36 gap-5"
+      >
+        @if(jobList){ @for (job of jobList; track $index) {
+
+        <div
+          class="w-full cursor-pointer flex justify-between border p-5 shadow-lg"
+          (click)="clickItem(job)"
+        >
+          <div>
+            <div>
+              <h1 class="font-bold hover:opacity-75 cursor-pointer">
+                {{ job?.name }}
+              </h1>
+              <div class="mt-5">
+                <span class="text-gray-500 text-xs"
+                  ><i class="fa-solid fa-clock"></i>&nbsp;{{
+                    job?.job_Type
+                  }}</span
+                >
+                <span class="text-gray-500 ml-2 text-xs"
+                  ><i class="fa-solid fa-location-dot"></i>&nbsp;{{
+                    job?.address
+                  }}</span
+                >
+              </div>
+            </div>
+          </div>
+          <div>
+            <button
+              class="bg-black text-white font-semibold hover:bg-white hover:text-black p-2 hover:border"
+            >
+              Ứng tuyển
+            </button>
+          </div>
+        </div>
+        } }
+
+        <!-- empty -->
+        <div
+          *ngIf="!jobList || jobList.length === 0"
+          class="flex items-center justify-center mt-16 w-full"
+        >
+          <nz-empty
+            nzNotFoundContent="Không có công việc nào như yêu cầu bạn mong muốn"
+          ></nz-empty>
+        </div>
+
+        <!-- pagination -->
+        <div class="mt-10 flex items-center justify-center">
+          <nz-pagination
+            [nzPageIndex]="page"
+            [nzTotal]="totalPage"
+            (nzPageIndexChange)="pageActive($event)"
+          ></nz-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

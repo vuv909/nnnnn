@@ -1,0 +1,110 @@
+<app-navbar
+  
+></app-navbar>
+<div class="flex items-center justify-center pt-44 pb-32 bg-gray-100">
+  <form
+    class="shadow-md rounded-md"
+    style="
+      background-color: white;
+      margin-right: 100px;
+      margin-left: 100px;
+      width: 100%;
+    "
+    nz-form
+    [formGroup]="validateForm"
+    (ngSubmit)="submitForm()"
+  >
+    <nz-spin [nzSpinning]="isSpinning" [nzSize]="'large'" nzTip="Đang đăng kí...">
+      <div class="text-center mb-4" style="width: 100%">
+        <h1 class="font-bold text-2xl mt-3">Đăng kí</h1>
+      </div>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="nickname" nzRequired>
+          <span>Username</span>
+        </nz-form-label>
+        <nz-form-control 
+          [nzSm]="14"
+          [nzXs]="24"
+          nzErrorTip="Please input your nickname!"
+        >
+          <input nz-input id="nickname" formControlName="nickname" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email"
+          >E-mail</nz-form-label
+        >
+        <nz-form-control
+          [nzSm]="14"
+          [nzXs]="24"
+          nzErrorTip="The input is not valid E-mail!"
+        >
+          <input nz-input formControlName="email" id="email" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="password" nzRequired
+          >Password</nz-form-label
+        >
+        <nz-form-control
+          [nzSm]="14"
+          [nzXs]="24"
+          nzErrorTip="Please input your password!"
+        >
+          <input
+            nz-input
+            type="password"
+            id="password"
+            formControlName="password"
+            (ngModelChange)="updateConfirmValidator()"
+          />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="checkPassword" nzRequired
+          >Confirm Password</nz-form-label
+        >
+        <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="errorTpl">
+          <input
+            nz-input
+            type="password"
+            formControlName="checkPassword"
+            id="checkPassword"
+          />
+          <ng-template #errorTpl let-control>
+            <ng-container *ngIf="control.hasError('required')"
+              >Please confirm your password!</ng-container
+            >
+            <ng-container *ngIf="control.hasError('confirm')">
+              Two passwords that you enter is inconsistent!
+            </ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item nz-row class="register-area">
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+          <label nz-checkbox formControlName="agree">
+            <span> Tôi đồng ý với mọi </span>
+          </label>
+          <span
+            class="font-bold text-blue-500 hover:text-blue-300 cursor-pointer"
+            (click)="policy()"
+            >Chính sách của công ty</span
+          >
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item
+        nz-row
+        class="register-area"
+        style="margin-left: auto; margin-right: auto"
+      >
+        <nz-form-control [nzSpan]="14" [nzOffset]="10">
+          <button nz-button nzType="primary">Đăng kí</button>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-spin>
+  </form>
+</div>

@@ -1,0 +1,90 @@
+<div class="pl-3">
+  <h1 class="text-center mt-3 font-bold text-xl mb-5">
+    Các tài khoản đang hoạt động
+  </h1>
+  <button
+    class="bg-blue-500 hover:bg-blue-300 text-white p-1 rounded-md"
+    (click)="showModal()"
+  >
+    Tạo tài khoản HR
+  </button>
+  <nz-table [nzShowPagination]="false" #basicTable [nzData]="listAccounts">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Giới tính</th>
+        <th>Vai trò</th>
+        <th>Xác thực</th>
+        <th>Trạng thái</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of listAccounts; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ data?.username }}</td>
+        <td>{{ data?.email }}</td>
+        <td>{{ data?.gender === true ? "Nam" : "Nữ" }}</td>
+        <td>{{ data?.role }}</td>
+        <td>{{ data?.verify === true ? "Đã xác thực" : "Chưa xác thực" }}</td>
+        <td>{{ "Active" }}</td>
+        <td>
+          <button
+            class="w-24 bg-blue-500 hover:bg-blue-300 text-white p-1 rounded-md mr-5"
+            (click)="blockAccount(data)"
+          >
+            Chặn
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+  <div class="flex justify-center" *ngIf="totalPage > 0">
+    <nz-pagination
+      [nzPageIndex]="page"
+      [nzTotal]="totalPage * 10"
+      (nzPageIndexChange)="pageActive($event)"
+    ></nz-pagination>
+  </div>
+  <nz-modal
+    [(nzVisible)]="isVisibleUpdate"
+    nzTitle="Tạo tài khoản HR"
+    (nzOnCancel)="handleCancelUpdate()"
+    (nzOnOk)="handleOkUpdate()"
+  >
+    <nz-spin [nzSpinning]="isAddHrSpinning" nzTip="Đang cập nhập">
+      <ng-container *nzModalContent>
+        <form [formGroup]="updateForm">
+          <div class="grid grid-cols-1 mb-2">
+            <label for="name" class="block">Username</label>
+            <input
+              type="text"
+              id="name"
+              class="w-full border border-gray-300 rounded-md px-3 py-2 outline-blue-300"
+              formControlName="username"
+            />
+          </div>
+          <div class="grid grid-cols-1 mb-2">
+            <label for="email" class="block">Email</label>
+            <input
+              type="text"
+              id="email"
+              class="w-full border border-gray-300 rounded-md px-3 py-2 outline-blue-300"
+              formControlName="email"
+            />
+          </div>
+          <div class="grid grid-cols-1 mb-2">
+            <label for="password" class="block">Mật khẩu</label>
+            <input
+              type="password"
+              id="password"
+              class="w-full border border-gray-300 rounded-md px-3 py-2 outline-blue-300"
+              formControlName="password"
+            />
+          </div>
+        </form>
+      </ng-container>
+    </nz-spin>
+  </nz-modal>
+</div>

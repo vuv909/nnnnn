@@ -1,0 +1,207 @@
+<app-navbar></app-navbar>
+<div style="width: 100%">
+  <div
+    class="relative"
+    style="
+      height: 100vh;
+      background-image: url('assets/images/banner.jpg');
+      background-size: cover;
+      background-position: center;
+      transform: scale(1);
+    "
+  >
+    <div
+      class="absolute flex flex-col gap-5"
+      style="left: 50%; top: 50%; transform: translate(-50%, -50%)"
+    >
+      <div>
+        <h1 class="text-white font-bold text-5xl">Tìm công việc bạn muốn!!!</h1>
+      </div>
+      <div
+        class="flex justify-center flex-wrap content-center gap-1 bg-white p-6 rounded-lg w-full"
+      >
+        <div
+          class="box-border bg-white flex items-center px-2 rounded-sm w-3/4"
+          style="border: 1px solid rgb(214, 211, 211)"
+        >
+          <span nz-icon nzType="search" nzTheme="outline"></span>
+          <input
+            class="p-2 w-full"
+            style="outline: none"
+            placeholder="Điền tên công việc"
+            [(ngModel)]="textSearch"
+          />
+        </div>
+        <div
+          class="bg-blue-500 hover:bg-blue-400 rounded-sm px-4 text-white font-semibold flex items-center"
+        >
+          <button class="p-2" (click)="search()">TÌM KIẾM</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- branch -->
+
+  <div class="p-10">
+    <div class="my-5 text-center font-bold text-3xl">
+      <h1>Các chi nhánh</h1>
+    </div>
+    <div *ngIf="branch" class="flex justify-center gap-5 w-full">
+      <div
+        *ngFor="let b of branch; let i = index"
+        class="relative w-1/3 h-auto"
+        (click)="branchSearch(b.id)"
+      >
+        <img
+          [src]="b.img"
+          alt=""
+          class="w-full p-5 h-96 cursor-pointer shadow-lg"
+        />
+        <div
+          class="absolute bottom-16 left-1/2 transform -translate-x-1/2 text-center w-full"
+        >
+          <h1>
+            <span
+              class="text-white font-bold p-2 bg-black rounded-lg cursor-pointer hover:bg-gray-800"
+              >{{ b.name }}</span
+            >
+          </h1>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- list of jobs -->
+  <div class="bg-gray-200 mb-16 pb-10 mx-28 shadow-2xl" #listJob>
+    <div class="mt-5">
+      <div>
+        <h1 class="text-center font-bold pt-10 text-3xl pb-5">
+          Các chuyên ngành hot
+        </h1>
+      </div>
+    </div>
+    <div *ngIf="listCategory" class="mt-10 flex flex-wrap justify-center gap-5">
+      <div *ngFor="let c of listCategory; let i = index" class="p-2 basis-1/4">
+        <div
+          class="p-2 flex gap-2 items-center justify-around py-6 bg-white cursor-pointer rounded-md"
+          (click)="categorySearch(c.id)"
+        >
+          <div>
+            <img
+              [src]="'data:image/png;base64,' + c.image"
+              src="https://picsum.photos/200/300"
+              class="w-32 h-32"
+            />
+          </div>
+          <div>
+            <h1 class="font-bold">{{ c.name }}</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="mt-20 mb-16 flex items-center justify-center gap-5">
+      <div>
+        <button
+          class="bg-blue-500 hover:bg-blue-300 p-2 text-white font-semibold rounded-md w-24"
+         
+        >
+          Xem thêm
+        </button>
+      </div>
+      <div>
+        <button
+          class="bg-red-500 hover:bg-red-300 p-2 text-white font-semibold rounded-md w-24"
+     
+        >
+          Ẩn bớt
+        </button>
+      </div>
+    </div> -->
+  </div>
+
+  <ng-container *ngIf="role === 'JOBSEEKER'">
+    <div
+      class="fixed bottom-10 right-8"
+      [style.display]="chatModal ? 'none' : 'block'"
+      (click)="openModal()"
+      pTooltip="Do you need help you can chat with me ?"
+    >
+      <img
+        class="w-10 h-10 rounded-full bg-blue-500 cursor-pointer text-white p-2"
+        src="assets/images/customer-service.png"
+        alt=""
+      />
+    </div>
+
+    <div
+      class="fixed inset-0 flex justify-center items-center"
+      [style.display]="chatModal ? 'block' : 'none'"
+    >
+      <div class="chat_window">
+        <div class="top_menu">
+          <div class="flex justify-end mr-5">
+            <p
+              class="w-5 h-5 text-white bg-red-500 hover:bg-red-300 rounded-full cursor-pointer text-center"
+              (click)="closeModal()"
+            >
+              X
+            </p>
+          </div>
+          <div class="title">
+            <img alt="" width="25px" height="25px" />
+            Chăm sóc khách hàng
+          </div>
+        </div>
+        <ul class="messages" #chatContainer>
+          <li
+            class="message right"
+            *ngFor="let item of messageList"
+            [ngClass]="{
+              left: item.message_side === 'receiver',
+              right: item.message_side === 'sender'
+            }"
+          >
+            <!-- <div class="avatar">
+            <ng-container *ngIf="item.message_side === 'receiver'">
+              <img
+                class="rounded-full bg-blue-500"
+                src="assets/images/customer-service.png"
+                alt=""
+              />
+            </ng-container>
+          </div> -->
+
+            <ng-container *ngIf="item.message_side === 'receiver'">
+              <div class="avatar">
+                <img
+                  class="rounded-full bg-blue-500"
+                  src="assets/images/customer-service.png"
+                  alt=""
+                />
+              </div>
+            </ng-container>
+
+            <div class="text_wrapper">
+              <div class="text">{{ item.content }}</div>
+            </div>
+          </li>
+        </ul>
+        <div class="bottom_wrapper clearfix">
+          <div class="message_input_wrapper">
+            <input
+              class="message_input"
+              placeholder="Message..."
+              [(ngModel)]="messageInput"
+              (keyup.enter)="sendMessage()"
+            />
+          </div>
+          <div class="send_message" (click)="sendMessage()">
+            <div class="icon"></div>
+            <div class="text">Send</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

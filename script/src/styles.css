@@ -1,0 +1,35 @@
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;/*# sourceMappingURL=styles.css.map */
+
+@font-face {
+    font-family: "NotoSans";
+    src: url("/fonts/notosans-regular.2cb88a13.woff2") format("woff2");
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: "NotoSans";
+    src: url("/fonts/notosans-bold.3ede5aff.woff2") format("woff2");
+    font-weight: bold;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: "NotoSans";
+    src: url("/fonts/notosans-italic.1c1aaac9.woff2") format("woff2");
+    font-weight: normal;
+    font-style: italic;
+  }
+  
+  @font-face {
+    font-family: "NotoSans";
+    src: url("/fonts/notosans-semibold.df3e6dc4.woff2") format("woff2");
+    font-weight: bold;
+    font-style: normal;
+  }
+

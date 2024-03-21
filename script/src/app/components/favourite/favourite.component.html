@@ -1,0 +1,54 @@
+<div class="flex-grow mb-10">
+  <app-navbar></app-navbar>
+  <div class="mt-24">
+    <div>
+      <div class="w-full px-20 text-center">
+        <h1 class="font-bold text-3xl text-center">Các công việc yêu thích</h1>
+      </div>
+
+      <div
+        class="mt-10 flex items-center justify-center flex-wrap w-full px-36 gap-5"
+      >
+        @if(jobList){ @for (job of jobList; track $index) {
+        <div class="w-1/3 flex justify-between border p-5 shadow-lg">
+          <div (click)="changePage(job.jobId)">
+            <div>
+              <h1 class="font-bold hover:opacity-75 cursor-pointer text-xl">
+                {{ job?.nameJob }}
+              </h1>
+            </div>
+          </div>
+          <div>
+            <button
+              class="font-semibold text-red-600 text-xl p-2 hover:text-red-400"
+              tooltipPosition="top"
+              pTooltip="Delete from favourite job !!!"
+              (click)="deleteFavouriteJob($event ,  job)"
+            >
+              <i class="fa-solid fa-heart"></i>
+            </button>
+          </div>
+        </div>
+        } }
+
+        <!-- empty -->
+        <div
+          *ngIf="!jobList || jobList.length === 0"
+          class="flex items-center justify-center mt-16 w-full"
+        >
+          <nz-empty
+          ></nz-empty>
+        </div>
+      </div>
+      @if(totalPage > 0){
+        <div class="mt-10 flex items-center justify-center">
+          <nz-pagination
+            [nzPageIndex]="page"
+            [nzTotal]="totalPage"
+            (nzPageIndexChange)="pageActive($event)"
+          ></nz-pagination>
+        </div>
+      }
+    </div>
+  </div>
+</div>
